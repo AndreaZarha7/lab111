@@ -1,16 +1,11 @@
-// server.js
-const PORT = process.env.PORT || 3000; // Usa puerto dinámico
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo por Andrea Anivarro en puerto ${PORT}`);
-});
 const express = require('express');
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000; // Usa puerto dinámico para Render
 
-// Middleware for parsing JSON
+// Middleware para parsear JSON
 app.use(express.json());
 
-// User class
+// Clase Usuario
 class User {
     constructor(id, name, username, email, password, updatedAt, image, rol) {
         this.id = id;
@@ -36,31 +31,36 @@ class User {
     }
 }
 
-// In-memory data
+// Datos en memoria
 let users = [
     new User(1, 'John Doe', 'johndoe', 'john@example.com', 'password123', new Date(), 'john.jpg', 'admin'),
     new User(2, 'Jane Smith', 'janesmith', 'jane@example.com', 'password123', new Date(), 'jane.jpg', 'user'),
     new User(3, 'Robert Brown', 'robbrown', 'robert@example.com', 'password123', new Date(), 'robert.jpg', 'user')
 ];
 
-// CRUD Endpoints
+// Ruta principal con tu nombre
+app.get('/', (req, res) => {
+    res.send('API desarrollada por Andrea Anivarro');
+});
 
-// Get all users
+// Endpoints CRUD
+
+// Obtener todos los usuarios
 app.get('/users', (req, res) => {
     res.json(users);
 });
 
-// Get user by ID
+// Obtener usuario por ID
 app.get('/users/:id', (req, res) => {
     const user = users.find(u => u.id == req.params.id);
     if (user) {
         res.json(user);
     } else {
-        res.status(404).json({ message: 'User not found' });
+        res.status(404).json({ message: 'Usuario no encontrado' });
     }
 });
 
-// Create a new user
+// Crear nuevo usuario
 app.post('/users', (req, res) => {
     const { name, username, email, password, image, rol } = req.body;
     const newUser = new User(
@@ -71,30 +71,30 @@ app.post('/users', (req, res) => {
         password,
         new Date(),
         image,
-        rol
+        rol || 'user' // Valor por defecto
     );
     users.push(newUser);
     res.status(201).json(newUser);
 });
 
-// Update a user
+// Actualizar usuario
 app.put('/users/:id', (req, res) => {
     const user = users.find(u => u.id == req.params.id);
     if (user) {
         user.updateProfile(req.body);
         res.json(user);
     } else {
-        res.status(404).json({ message: 'User not found' });
+        res.status(404).json({ message: 'Usuario no encontrado' });
     }
 });
 
-// Delete a user
+// Eliminar usuario
 app.delete('/users/:id', (req, res) => {
     users = users.filter(u => u.id != req.params.id);
     res.status(204).send();
 });
 
-// Start server
+// Iniciar servidor
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Servidor corriendo por Andrea Anivarro en http://localhost:${PORT}`);
 });
