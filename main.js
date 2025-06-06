@@ -1,5 +1,8 @@
 // server.js
-
+const PORT = process.env.PORT || 3000; // Usa puerto dinámico
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo por Andrea Anivarro en puerto ${PORT}`);
+});
 const express = require('express');
 const app = express();
 const PORT = 3000;
