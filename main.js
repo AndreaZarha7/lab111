@@ -100,6 +100,3 @@ app.listen(PORT, () => {
 });
 
 
-git add .
-git commit -m "Código completo corregido"
-git push origin main
